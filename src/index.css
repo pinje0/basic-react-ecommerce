@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  /* font-family: monospace, "Inter", sans-serif; */
+  @apply font-sans;
+}
+
+.hover-opacity-animation {
+  @apply transition ease-in-out duration-300 hover:opacity-50;
+}
