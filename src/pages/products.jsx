@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Fragment, useEffect, useRef, useState } from "react";
 import CardProduct from "../Components/Fragments/CardProduct";
 import Button from "../Components/Elements/Button";
 import getProducts from "../services/products.service";
+import { getUsername } from "../services/auth.service";
 // import Counter from "../Components/Fragments/Counter";
 
 // const products = [
@@ -28,15 +30,23 @@ import getProducts from "../services/products.service";
 //   },
 // ];
 
-const email = localStorage.getItem("email");
-
 const ProductsPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUsername(getUsername(token));
+    } else {
+      window.location.href = "/login";
+    }
   }, []);
 
   useEffect(() => {
@@ -57,8 +67,7 @@ const ProductsPage = () => {
   }, [cart, products]);
 
   const handleLogout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
+    localStorage.removeItem("token");
     window.location.href = "/login";
   };
 
@@ -91,7 +100,7 @@ const ProductsPage = () => {
   return (
     <Fragment>
       <div className="flex justify-end h-20 bg-primary text-white items-center px-10">
-        {email}
+        {username}
         <Button classname="bg-red-600 ml-5" onClick={handleLogout}>
           Logout
         </Button>
