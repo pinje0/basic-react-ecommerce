@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Fragment, useEffect, useRef, useState } from "react";
 import CardProduct from "../Components/Fragments/CardProduct";
 import Button from "../Components/Elements/Button";
 import getProducts from "../services/products.service";
-import { getUsername } from "../services/auth.service";
+import { useLogin } from "../hooks/useLogin";
 // import Counter from "../Components/Fragments/Counter";
 
 // const products = [
@@ -34,19 +33,10 @@ const ProductsPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
-  const [username, setUsername] = useState("");
+  const username = useLogin();
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
-  }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUsername(getUsername(token));
-    } else {
-      window.location.href = "/login";
-    }
   }, []);
 
   useEffect(() => {
